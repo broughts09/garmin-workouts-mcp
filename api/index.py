@@ -2,13 +2,12 @@ import os
 import sys
 from fastmcp import FastMCP
 from starlette.applications import Starlette
+from starlette.routing import Route, Mount
+from starlette.responses import JSONResponse
 
 sys.path.append(os.path.dirname(__file__))
 
-try:
-    from garmin_workout import GarminClient
-except ImportError:
-    from api.garmin_workout import GarminClient
+from garmin_workout import GarminClient
 
 mcp = FastMCP("Garmin Tyson MCP")
 
@@ -28,4 +27,14 @@ async def get_recent_workouts(count: int = 5):
     except Exception as e:
         return f"Error: {str(e)}"
 
-app = mcp._app if hasattr(mcp, "_app") else mcp
+
+async def homepage(request):
+    return JSONResponse({"status": "Garmin MCP is running"})
+
+starlette_app = Starlette(debug=True, routes=[
+    Route("/", homepage),
+])
+
+starlette_app.mount("/", mcp.handle_sse())
+
+app = starlette_app
