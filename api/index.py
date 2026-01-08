@@ -3,6 +3,7 @@ from fastmcp import FastMCP
 from api.garmin_workout import GarminClient
 
 mcp = FastMCP("Garmin Tyson MCP")
+
 app = mcp.as_asgi()
 
 @mcp.tool()
@@ -12,14 +13,11 @@ async def get_recent_workouts(count: int = 5):
     password = os.getenv("GARMIN_PASSWORD")
     
     if not email or not password:
-        return "Error: Garmin credentials not found in Vercel environment variables."
+        return "Error: Garmin credentials not found."
 
     try:
         client = GarminClient(email, password)
         workouts = client.get_workouts(count)
         return workouts
     except Exception as e:
-        return f"Error connecting to Garmin: {str(e)}"
-
-if __name__ == "__main__":
-    mcp.run()
+        return f"Error: {str(e)}"
