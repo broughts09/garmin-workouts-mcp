@@ -1,5 +1,8 @@
 import os
 import sys
+
+sys.path = [p for p in sys.path if "_vendor" not in p and "vendor" not in p]
+
 from fastmcp import FastMCP
 from starlette.applications import Starlette
 
