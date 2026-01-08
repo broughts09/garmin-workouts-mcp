@@ -1,0 +1,28 @@
+{
+  "api": [
+    {
+      "url": "https://garmin-tyson-mcp-tys-projects-017a8486.vercel.app/api",
+      "name": "get_activities",
+      "description": "Fetch Garmin activities. Input only the number of activities.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "number",
+            "description": "Number of activities"
+          }
+        },
+        "required": ["limit"],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "identifier": "garmin-tyson-mcp",
+  "type": "default",
+  "meta": {
+    "avatar": "🏃‍♂️",
+    "title": "Garmin Tyson MCP"
+  },
+  "gateway": "https://garmin-tyson-mcp-tys-projects-017a8486.vercel.app/api",
+  "version": "1.7"
+}
