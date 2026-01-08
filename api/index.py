@@ -1,6 +1,10 @@
 import os
+import sys
 from fastmcp import FastMCP
-from api.garmin_workout import GarminClient
+
+sys.path.append(os.path.dirname(__file__))
+
+from garmin_workout import GarminClient
 
 mcp = FastMCP("Garmin Tyson MCP")
 
@@ -20,4 +24,4 @@ async def get_recent_workouts(count: int = 5):
     except Exception as e:
         return f"Error: {str(e)}"
 
-app = mcp.as_asgi()
+app = mcp._app if hasattr(mcp, "_app") else mcp
