@@ -4,13 +4,6 @@ from api.garmin_workout import GarminClient
 
 mcp = FastMCP("Garmin Tyson MCP")
 
-from starlette.applications import Starlette
-from starlette.routing import Mount
-
-app = Starlette(routes=[
-    Mount("/api", app=mcp._app if hasattr(mcp, "_app") else mcp)
-])
-
 @mcp.tool()
 async def get_recent_workouts(count: int = 5):
     """Get my latest workouts from Garmin Connect"""
@@ -26,3 +19,5 @@ async def get_recent_workouts(count: int = 5):
         return workouts
     except Exception as e:
         return f"Error: {str(e)}"
+
+app = mcp.as_asgi()
