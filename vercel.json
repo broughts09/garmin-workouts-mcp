@@ -1,16 +1,12 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/index.py",
-      "use": "@vercel/python",
-      "config": { "runtime": "python3.12" }
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     }
   ],
-  "routes": [
-    {
-      "src": "/api",
-      "dest": "api/index.py"
-    }
-  ]
+  "env": {
+    "PYTHONPATH": "."
+  }
 }
