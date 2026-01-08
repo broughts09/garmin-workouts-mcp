@@ -456,3 +456,25 @@ def estimate_step_duration(step: dict, sport_type: str) -> int:
 
     # Calculate estimated duration
     return int(distance * pace_per_meter)
+    
+    import garth
+
+class GarminClient:
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+        self.client = garth.Client()
+
+    def login(self):
+        """Log in to Garmin Connect using Garth"""
+        try:
+            self.client.login(self.email, self.password)
+        except Exception as e:
+            raise Exception(f"Garmin login failed: {str(e)}")
+
+    def get_workouts(self, count=5):
+        """Fetch the latest workouts from the account"""
+        self.login()
+        # Fetching workouts from the Garmin API
+        workouts = self.client.connectapi("/workout-service/workout/list", params={"start": 0, "limit": count})
+        return workouts
