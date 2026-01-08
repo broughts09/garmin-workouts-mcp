@@ -2,9 +2,9 @@ import os
 from fastmcp import FastMCP
 
 try:
-    from .garmin_workout import GarminClient
-except (ImportError, ValueError):
-    from api.garmin_workout import GarminClient
+    import api.garmin_workout as gw
+except ImportError:
+    import garmin_workout as gw
 
 mcp = FastMCP("Garmin Tyson MCP")
 app = mcp.as_asgi() 
@@ -16,12 +16,13 @@ async def get_recent_workouts(count: int = 5):
     password = os.getenv("GARMIN_PASSWORD")
     
     if not email or not password:
-        return "Error: Garmin credentials not found in environment variables."
+        return "Error: Garmin credentials not found in Vercel settings."
 
     try:
-        client = GarminClient(email, password)
-        workouts = client.get_workouts(count)
-        return workouts
+        client = gw.GarminClient(email, password)
+        return client.get_workouts(count)
+    except AttributeError:
+        return "Error: Could not find 'GarminClient' inside garmin_workout.py. Please check the class name."
     except Exception as e:
         return f"Error: {str(e)}"
 
