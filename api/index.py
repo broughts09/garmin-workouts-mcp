@@ -24,4 +24,4 @@ async def get_recent_workouts(count: int = 5):
     except Exception as e:
         return f"Error: {str(e)}"
 
-app = mcp._app if hasattr(mcp, "_app") else mcp
+app = mcp.as_asgi()
