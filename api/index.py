@@ -1,14 +1,8 @@
 import os
 import sys
-
-sys.path = [p for p in sys.path if "_vendor" not in p and "vendor" not in p]
-
 from fastmcp import FastMCP
-from starlette.applications import Starlette
 
-current_dir = os.path.dirname(__file__)
-if current_dir not in sys.path:
-    sys.path.append(current_dir)
+sys.path.append(os.path.dirname(__file__))
 
 try:
     from garmin_workout import GarminClient
@@ -33,5 +27,4 @@ async def get_recent_workouts(count: int = 5):
     except Exception as e:
         return f"Error: {str(e)}"
 
-app = Starlette()
-app.mount("/", mcp._app if hasattr(mcp, "_app") else mcp)
+app = mcp.as_asgi()
