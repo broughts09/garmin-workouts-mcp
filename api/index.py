@@ -1,9 +1,14 @@
 import os
 import sys
+
+sys.path = [p for p in sys.path if "_vendor" not in p and "vendor" not in p]
+
 from fastmcp import FastMCP
 from starlette.applications import Starlette
 
-sys.path.append(os.path.dirname(__file__))
+current_dir = os.path.dirname(__file__)
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
 
 try:
     from garmin_workout import GarminClient
