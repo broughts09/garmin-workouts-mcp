@@ -1,6 +1,7 @@
 import os
 import sys
 from fastmcp import FastMCP
+from starlette.applications import Starlette
 
 sys.path.append(os.path.dirname(__file__))
 
@@ -27,4 +28,5 @@ async def get_recent_workouts(count: int = 5):
     except Exception as e:
         return f"Error: {str(e)}"
 
-app = mcp.as_asgi()
+app = Starlette()
+app.mount("/", mcp._app if hasattr(mcp, "_app") else mcp)
